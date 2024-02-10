@@ -54,7 +54,7 @@ public class BlockListener implements Listener {
             case 5: case 6:
             	yawRotation = 90;
             	break;
-            case 7: case 8:
+            case 7: case 8: case: 0
             	yawRotation = 180;
             	break;
             default:
