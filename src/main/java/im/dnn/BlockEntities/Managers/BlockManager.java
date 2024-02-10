@@ -23,12 +23,12 @@ public class BlockManager {
         this.preload();
     }
 
-    public void addBlock (Location location, BlockItem blockItem) {
+    public void addBlock (Location location, BlockItem blockItem, float yawRotation) {
         String blockID = Helpers.locationToString(location);
-        BlockEntity blockEntity = new BlockEntity(location, blockItem);
+        BlockEntity blockEntity = new BlockEntity(location, blockItem, yawRotation);
 
         blockCollection.put(blockID, blockEntity);
-    }
+    } 
 
     public void removeBlock (Location location) {
         String blockID = Helpers.locationToString(location);
@@ -72,7 +72,7 @@ public class BlockManager {
                 ItemStack itemStack = entity.getItemStack();
                 BlockItem blockItem = new BlockItem(itemStack);
                 entity.remove();
-                this.addBlock(location, blockItem);
+                this.addBlock(location, blockItem,location.getYaw());
             }
         }
     }

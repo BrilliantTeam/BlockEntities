@@ -6,6 +6,8 @@ import im.dnn.BlockEntities.Constants.Permissions;
 import im.dnn.BlockEntities.Managers.BlockManager;
 import im.dnn.BlockEntities.Models.BlockItem;
 import im.dnn.BlockEntities.Utils.Helpers;
+import im.dnn.BlockEntities.Utils.Logger;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -37,11 +39,28 @@ public class BlockListener implements Listener {
                 Helpers.sendMessage(this.plugin, player, Keys.MESSAGES_CANT_PLACE);
                 event.setCancelled(true);
                 return;
-            }
+            } 
 
             Location location = event.getBlockPlaced().getLocation();
             BlockItem blockItem = new BlockItem(item);
-            this.blockManager.addBlock(location, blockItem);
+            float yawRotation = 0;
+            switch ((int)(player.getEyeLocation().getYaw()+180)/45) {
+            case 1: case 2:
+            	yawRotation = -90;
+            	break;
+            case 3: case 4:
+            	yawRotation = 0;
+            	break;
+            case 5: case 6:
+            	yawRotation = 90;
+            	break;
+            case 7: case 8:
+            	yawRotation = 180;
+            	break;
+            default:
+            	Logger.importantInfo( "unexception yaw "+ yawRotation);
+            }	
+            this.blockManager.addBlock(location, blockItem, yawRotation);
         }
     }
 

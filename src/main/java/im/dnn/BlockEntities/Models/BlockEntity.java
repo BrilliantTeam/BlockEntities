@@ -15,15 +15,18 @@ public class BlockEntity {
     private BlockItem blockItem;
 
     public BlockEntity (Location location, BlockItem blockItem) {
-        this.placeBlock(location, blockItem);
+        this.placeBlock(location, blockItem, 0);
+    }
+    public BlockEntity (Location location, BlockItem blockItem, float yawRotation) {
+        this.placeBlock(location, blockItem, yawRotation);
     }
 
-    private void placeBlock (Location location, BlockItem blockItem) {
+    private void placeBlock (Location location, BlockItem blockItem, float yawRotation) {
         World world = location.getWorld();
 
         world.setBlockData(location, HITBOX_MATERIAL.createBlockData());
         Location entityLocation = getLocationFromBlock(location);
-
+        entityLocation.setYaw(yawRotation);
         world.spawn(entityLocation, ItemDisplay.class, entity -> {
             ItemStack item = blockItem.getItem(1);
             entity.setItemStack(item);

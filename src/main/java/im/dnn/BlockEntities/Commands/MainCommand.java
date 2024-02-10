@@ -27,17 +27,14 @@ public class MainCommand implements CommandExecutor {
         if (args.length == 0) {
             return this.help(sender);
         }
-
-        if (args[0].equalsIgnoreCase(Commands.HELP)) {
-            return this.help(sender);
-        }
-
-        if (args[0].equalsIgnoreCase(Commands.RELOAD)) {
-            return this.reload(sender);
-        }
-
-        if (args[0].equalsIgnoreCase(Commands.GET)) {
-            return this.blockCommand.onCommand(sender, args);
+        
+        switch(args[0].toLowerCase()) {
+        case Commands.HELP:
+        	return help(sender);
+        case Commands.RELOAD:
+        	return reload(sender);
+        case Commands.GET:
+        	return blockCommand.onCommand(sender, args);
         }
 
         return false;
