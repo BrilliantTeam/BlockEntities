@@ -2,9 +2,11 @@ package im.dnn.BlockEntities.Models;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.entity.ItemDisplay;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataType;
 
 public class BlockEntity {
     private final Material BROKEN_MATERIAL = Material.AIR;
@@ -14,14 +16,14 @@ public class BlockEntity {
     private ItemDisplay entity;
     private BlockItem blockItem;
 
-    public BlockEntity (Location location, BlockItem blockItem) {
-        this.placeBlock(location, blockItem, 0);
+    public BlockEntity (Location location,NamespacedKey key, BlockItem blockItem) {
+        this.placeBlock(location, key ,blockItem, 0);
     }
-    public BlockEntity (Location location, BlockItem blockItem, float yawRotation) {
-        this.placeBlock(location, blockItem, yawRotation);
+    public BlockEntity (Location location,NamespacedKey key, BlockItem blockItem, float yawRotation) {
+        this.placeBlock(location, key ,blockItem, yawRotation);
     }
 
-    private void placeBlock (Location location, BlockItem blockItem, float yawRotation) {
+    private void placeBlock (Location location,NamespacedKey key, BlockItem blockItem, float yawRotation) {
         World world = location.getWorld();
 
         world.setBlockData(location, HITBOX_MATERIAL.createBlockData());
@@ -32,7 +34,7 @@ public class BlockEntity {
             entity.setItemStack(item);
             entity.setPersistent(true);
             entity.setInvulnerable(true);
-
+            entity.getPersistentDataContainer().set(key, PersistentDataType.BOOLEAN, true);
             this.entity = entity;
             this.location = location;
             this.blockItem = blockItem;

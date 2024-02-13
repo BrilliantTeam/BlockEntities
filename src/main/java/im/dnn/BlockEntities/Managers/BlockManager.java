@@ -6,27 +6,31 @@ import im.dnn.BlockEntities.Models.BlockItem;
 import im.dnn.BlockEntities.Utils.Helpers;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.NamespacedKey;
 import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataType;
+
 import java.util.HashMap;
 
 public class BlockManager {
     private final BlockEntities plugin;
     private HashMap<String, BlockEntity> blockCollection;
-
+    private NamespacedKey key;
     public BlockManager (BlockEntities plugin) {
         blockCollection = new HashMap<>();
+        key = new NamespacedKey(plugin, "block_entity");
         this.plugin = plugin;
         this.preload();
     }
-
+    
     public void addBlock (Location location, BlockItem blockItem, float yawRotation) {
         String blockID = Helpers.locationToString(location);
-        BlockEntity blockEntity = new BlockEntity(location, blockItem, yawRotation);
-
+        BlockEntity blockEntity = new BlockEntity(location,key, blockItem, yawRotation);
+        
         blockCollection.put(blockID, blockEntity);
     } 
 
@@ -68,12 +72,18 @@ public class BlockManager {
     private void preload () {
         for(World world : this.plugin.getServer().getWorlds()) {
             for (ItemDisplay entity : world.getEntitiesByClass(ItemDisplay.class)) {
-                Location location = getLocationFromEntity(entity.getLocation());
-                ItemStack itemStack = entity.getItemStack();
-                BlockItem blockItem = new BlockItem(itemStack);
-                entity.remove();
-                this.addBlock(location, blockItem,location.getYaw());
+            	reload(entity);
             }
         }
+    }
+    
+    public void reload(ItemDisplay entity) {
+    	if(!entity.getPersistentDataContainer().has(key, PersistentDataType.BOOLEAN))
+    		return;
+        Location location = getLocationFromEntity(entity.getLocation());
+        ItemStack itemStack = entity.getItemStack();
+        BlockItem blockItem = new BlockItem(itemStack);
+        entity.remove();
+        this.addBlock(location, blockItem,location.getYaw());
     }
 }

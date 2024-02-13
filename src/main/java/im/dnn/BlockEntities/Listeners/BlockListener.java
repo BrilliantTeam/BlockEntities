@@ -10,12 +10,16 @@ import im.dnn.BlockEntities.Utils.Logger;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.world.EntitiesLoadEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class BlockListener implements Listener {
@@ -32,7 +36,7 @@ public class BlockListener implements Listener {
         ItemStack item = event.getItemInHand();
         Material material = item.getData().getItemType();
 
-        if (material.equals(Material.LEGACY_STONE) && item.getItemMeta().hasCustomModelData()) {
+        if (material.equals(Material.BARRIER) && item.getItemMeta().hasCustomModelData()) {
             Player player = event.getPlayer();
 
             if (!Helpers.hasPermission(player, Permissions.PLACE)) {
@@ -44,7 +48,7 @@ public class BlockListener implements Listener {
             Location location = event.getBlockPlaced().getLocation();
             BlockItem blockItem = new BlockItem(item);
             float yawRotation = 0;
-            switch ((int)(player.getEyeLocation().getYaw()+180)/45) {
+            switch ((int)Math.round((player.getEyeLocation().getYaw()+180f)/45f)) {
             case 1: case 2:
             	yawRotation = -90;
             	break;
@@ -54,7 +58,7 @@ public class BlockListener implements Listener {
             case 5: case 6:
             	yawRotation = 90;
             	break;
-            case 7: case 8: case: 0
+            case 7: case 8: case 0:
             	yawRotation = 180;
             	break;
             default:
@@ -63,6 +67,7 @@ public class BlockListener implements Listener {
             this.blockManager.addBlock(location, blockItem, yawRotation);
         }
     }
+    
 
     @EventHandler
     public void onWantBlockBroke (PlayerInteractEvent event) {
@@ -78,5 +83,13 @@ public class BlockListener implements Listener {
 
             this.blockManager.breakBlock(location, player);
         }
+    }
+
+    @EventHandler
+    public void onBlockLoad(EntitiesLoadEvent event) {
+    	for(Entity entity : event.getEntities()) {
+    		if(entity instanceof ItemDisplay)
+    			blockManager.reload((ItemDisplay)entity);
+    	}
     }
 }
