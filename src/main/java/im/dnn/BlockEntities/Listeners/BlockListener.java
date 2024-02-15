@@ -8,6 +8,7 @@ import im.dnn.BlockEntities.Models.BlockItem;
 import im.dnn.BlockEntities.Utils.Helpers;
 import im.dnn.BlockEntities.Utils.Logger;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -34,11 +35,9 @@ public class BlockListener implements Listener {
     @EventHandler
     public void onBlockPlaced (BlockPlaceEvent event) {
         ItemStack item = event.getItemInHand();
-        Material material = item.getData().getItemType();
-
+        Material material = item.getType();
         if (material.equals(Material.BARRIER) && item.getItemMeta().hasCustomModelData()) {
             Player player = event.getPlayer();
-
             if (!Helpers.hasPermission(player, Permissions.PLACE)) {
                 Helpers.sendMessage(this.plugin, player, Keys.MESSAGES_CANT_PLACE);
                 event.setCancelled(true);
@@ -87,6 +86,8 @@ public class BlockListener implements Listener {
 
     @EventHandler
     public void onBlockLoad(EntitiesLoadEvent event) {
+    	if(event.getChunk()==null)
+    		return;
     	for(Entity entity : event.getEntities()) {
     		if(entity instanceof ItemDisplay)
     			blockManager.reload((ItemDisplay)entity);
