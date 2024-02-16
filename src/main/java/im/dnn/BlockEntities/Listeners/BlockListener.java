@@ -14,10 +14,12 @@ import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event.Result;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -68,10 +70,14 @@ public class BlockListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onWantBlockBroke (PlayerInteractEvent event) {
-    	if(event.isCancelled())
+    	if(event.useItemInHand()!=Result.ALLOW)
     		return;
         if (event.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
-            Location location = event.getClickedBlock().getLocation();
+        	BlockBreakEvent breakEvent = new BlockBreakEvent(event.getClickedBlock(), event.getPlayer());
+        	Bukkit.getPluginManager().callEvent(breakEvent);
+        	if(breakEvent.isCancelled())
+        		return;
+        	Location location = event.getClickedBlock().getLocation();
             Player player = event.getPlayer();
 
 
