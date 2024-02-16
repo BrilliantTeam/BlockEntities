@@ -75,16 +75,16 @@ public class BlockListener implements Listener {
         if (event.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
         	BlockBreakEvent breakEvent = new BlockBreakEvent(event.getClickedBlock(), event.getPlayer());
         	Bukkit.getPluginManager().callEvent(breakEvent);
-        	if(breakEvent.isCancelled())
-        		return;
-        	Location location = event.getClickedBlock().getLocation();
-            Player player = event.getPlayer();
-
-
-            this.blockManager.breakBlock(location, player);
         }
     }
 
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onWantBlockBreak (BlockBreakEvent event) { 
+    	if(event.isCancelled())
+    		return;
+
+        this.blockManager.breakBlock(event.getBlock().getLocation(), event.getPlayer());
+    }
     @EventHandler
     public void onBlockLoad(EntitiesLoadEvent event) {
     	if(event.getChunk()==null)
