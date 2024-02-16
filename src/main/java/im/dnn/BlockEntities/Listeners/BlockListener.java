@@ -15,6 +15,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -32,8 +33,10 @@ public class BlockListener implements Listener {
         this.blockManager = blockManager;
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onBlockPlaced (BlockPlaceEvent event) {
+    	if(event.isCancelled())
+    		return;
         ItemStack item = event.getItemInHand();
         Material material = item.getType();
         if (material.equals(Material.BARRIER) && item.getItemMeta().hasCustomModelData()) {
@@ -63,8 +66,10 @@ public class BlockListener implements Listener {
     }
     
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onWantBlockBroke (PlayerInteractEvent event) {
+    	if(event.isCancelled())
+    		return;
         if (event.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
             Location location = event.getClickedBlock().getLocation();
             Player player = event.getPlayer();
