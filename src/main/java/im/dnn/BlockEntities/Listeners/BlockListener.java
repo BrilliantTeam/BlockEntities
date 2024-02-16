@@ -38,11 +38,6 @@ public class BlockListener implements Listener {
         Material material = item.getType();
         if (material.equals(Material.BARRIER) && item.getItemMeta().hasCustomModelData()) {
             Player player = event.getPlayer();
-            if (!Helpers.hasPermission(player, Permissions.PLACE)) {
-                Helpers.sendMessage(this.plugin, player, Keys.MESSAGES_CANT_PLACE);
-                event.setCancelled(true);
-                return;
-            } 
 
             Location location = event.getBlockPlaced().getLocation();
             BlockItem blockItem = new BlockItem(item);
@@ -74,11 +69,6 @@ public class BlockListener implements Listener {
             Location location = event.getClickedBlock().getLocation();
             Player player = event.getPlayer();
 
-            if (!Helpers.hasPermission(player, Permissions.BREAK)) {
-                Helpers.sendMessage(this.plugin, player, Keys.MESSAGES_CANT_BREAK);
-                event.setCancelled(true);
-                return;
-            }
 
             this.blockManager.breakBlock(location, player);
         }

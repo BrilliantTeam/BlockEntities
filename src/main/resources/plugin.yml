@@ -15,9 +15,3 @@ permissions:
   blockentities.get:
     description: Allows to use the get command to the players
     default: false
-  blockentities.place:
-    description: Allows to place blocks to the players
-    default: false
-  blockentities.break:
-    description: Allows to break blocks to the players
-    default: false

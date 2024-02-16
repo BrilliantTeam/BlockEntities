@@ -31,6 +31,8 @@ public class BlockEntity {
         entityLocation.setYaw(yawRotation);
         world.spawn(entityLocation, ItemDisplay.class, entity -> {
             ItemStack item = blockItem.getItem(1);
+            entity.setShadowStrength(0.5f);
+            entity.setShadowRadius(0.5f);
             entity.setItemStack(item);
             entity.setPersistent(true);
             entity.setInvulnerable(true);
