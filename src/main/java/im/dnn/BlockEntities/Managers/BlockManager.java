@@ -84,6 +84,7 @@ public class BlockManager {
         ItemStack itemStack = entity.getItemStack();
         BlockItem blockItem = new BlockItem(itemStack);
         entity.remove();
-        this.addBlock(location, blockItem,location.getYaw());
+        if(location.getBlock().getType==Material.BARRIER)
+            this.addBlock(location, blockItem,location.getYaw());
     }
 }
