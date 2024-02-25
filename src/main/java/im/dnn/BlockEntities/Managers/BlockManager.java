@@ -6,6 +6,7 @@ import im.dnn.BlockEntities.Models.BlockItem;
 import im.dnn.BlockEntities.Utils.Helpers;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Sound;
 import org.bukkit.World;
@@ -84,7 +85,7 @@ public class BlockManager {
         ItemStack itemStack = entity.getItemStack();
         BlockItem blockItem = new BlockItem(itemStack);
         entity.remove();
-        if(location.getBlock().getType==Material.BARRIER)
+        if(location.getBlock().getType()==Material.BARRIER)
             this.addBlock(location, blockItem,location.getYaw());
     }
 }
