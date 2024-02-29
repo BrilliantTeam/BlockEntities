@@ -73,9 +73,9 @@ public class BlockListener implements Listener {
     	if(event.useItemInHand()!=Result.ALLOW)
     		return;
     	if (event.getAction().equals(Action.LEFT_CLICK_BLOCK)&&event.getClickedBlock().getType()==Material.BARRIER) {
-        	BlockBreakEvent breakEvent = new BlockBreakEvent(event.getClickedBlock(), event.getPlayer());
-        	onWantBlockBreak(breakEvent);
-        }
+        	//BlockBreakEvent breakEvent = new BlockBreakEvent(event.getClickedBlock(), event.getPlayer());
+            this.blockManager.breakBlock(event.getClickedBlock().getLocation(), event.getPlayer());
+            }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
