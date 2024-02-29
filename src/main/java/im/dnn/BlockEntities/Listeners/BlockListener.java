@@ -70,17 +70,15 @@ public class BlockListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onWantBlockBroke (PlayerInteractEvent event) {
-    	if(event.useItemInHand()!=Result.ALLOW)
-    		return;
-        if (event.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
+        if (event.getAction().equals(Action.LEFT_CLICK_BLOCK)&&event.getClickedBlock().getType()==Material.BARRIER) {
         	BlockBreakEvent breakEvent = new BlockBreakEvent(event.getClickedBlock(), event.getPlayer());
-        	Bukkit.getPluginManager().callEvent(breakEvent);
+        	onWantBlockBreak(breakEvent);
         }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onWantBlockBreak (BlockBreakEvent event) { 
-    	if(event.isCancelled())
+    	if(event.isCancelled()||event.getBlock().getType()!=Material.BARRIER)
     		return;
 
         this.blockManager.breakBlock(event.getBlock().getLocation(), event.getPlayer());
