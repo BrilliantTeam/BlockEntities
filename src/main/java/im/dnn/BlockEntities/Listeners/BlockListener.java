@@ -70,7 +70,9 @@ public class BlockListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onWantBlockBroke (PlayerInteractEvent event) {
-        if (event.getAction().equals(Action.LEFT_CLICK_BLOCK)&&event.getClickedBlock().getType()==Material.BARRIER) {
+    	if(event.useItemInHand()!=Result.ALLOW)
+    		return;
+    	if (event.getAction().equals(Action.LEFT_CLICK_BLOCK)&&event.getClickedBlock().getType()==Material.BARRIER) {
         	BlockBreakEvent breakEvent = new BlockBreakEvent(event.getClickedBlock(), event.getPlayer());
         	onWantBlockBreak(breakEvent);
         }
