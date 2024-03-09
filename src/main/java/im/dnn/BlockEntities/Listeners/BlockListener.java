@@ -49,16 +49,16 @@ public class BlockListener implements Listener {
             float yawRotation = 0;
             switch ((int)Math.round((player.getEyeLocation().getYaw()+180f)/45f)) {
             case 1: case 2:
-            	yawRotation = -90;
-            	break;
-            case 3: case 4:
-            	yawRotation = 0;
-            	break;
-            case 5: case 6:
             	yawRotation = 90;
             	break;
-            case 7: case 8: case 0:
+            case 3: case 4:
             	yawRotation = 180;
+            	break;
+            case 5: case 6:
+            	yawRotation = -90;
+            	break;
+            case 7: case 8: case 0:
+            	yawRotation = 0;
             	break;
             default:
             	Logger.importantInfo( "unexception yaw "+ yawRotation);
