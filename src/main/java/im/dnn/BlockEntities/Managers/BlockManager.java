@@ -10,6 +10,7 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Sound;
 import org.bukkit.World;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -50,10 +51,11 @@ public class BlockManager {
         if (blockCollection.containsKey(blockID)) {
             BlockEntity blockEntity = blockCollection.get(blockID);
             BlockItem blockItem = blockEntity.getBlockItem();
-
             this.removeBlock(location);
             player.playSound(location, Sound.BLOCK_STONE_BREAK, 1, 1);
-
+            
+            
+            
             if (player.getGameMode() == GameMode.SURVIVAL) {
                 World world = location.getWorld();
                 world.dropItemNaturally(location, blockItem.getItem(1));
@@ -76,6 +78,10 @@ public class BlockManager {
             	reload(entity);
             }
         }
+    }
+    
+    public boolean isCustomBlock(Entity entity) {
+    	return entity.getPersistentDataContainer().has(key, PersistentDataType.BOOLEAN);
     }
     
     public void reload(ItemDisplay entity) {

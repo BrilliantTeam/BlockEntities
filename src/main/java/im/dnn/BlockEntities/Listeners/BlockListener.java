@@ -26,10 +26,14 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.world.EntitiesLoadEvent;
 import org.bukkit.inventory.ItemStack;
 
+import com.bekvon.bukkit.residence.api.ResidenceApi;
+import com.bekvon.bukkit.residence.api.ResidenceInterface;
+import com.bekvon.bukkit.residence.containers.Flags;
+
 public class BlockListener implements Listener {
     private BlockEntities plugin;
     private BlockManager blockManager;
-
+    private ResidenceInterface res = ResidenceApi.getResidenceManager();
     public BlockListener (BlockEntities plugin, BlockManager blockManager) {
         this.plugin = plugin;
         this.blockManager = blockManager;
@@ -70,20 +74,22 @@ public class BlockListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onWantBlockBroke (PlayerInteractEvent event) {
-    	if(event.useItemInHand()==Result.DENY)
+    	if(event.useItemInHand()==Result.DENY||event.useInteractedBlock()==Result.DENY)
     		return;
     	if (event.getAction().equals(Action.LEFT_CLICK_BLOCK)&&event.getClickedBlock().getType()==Material.BARRIER) {
         	//BlockBreakEvent breakEvent = new BlockBreakEvent(event.getClickedBlock(), event.getPlayer());
-            this.blockManager.breakBlock(event.getClickedBlock().getLocation(), event.getPlayer());
-            }
+    		
+    		if(BlockEntities.resAPI.getPermsByLoc(event.getClickedBlock().getLocation()).playerHas(event.getPlayer(),Flags.destroy, true))
+    			this.blockManager.breakBlock(event.getClickedBlock().getLocation(), event.getPlayer());
+        }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onWantBlockBreak (BlockBreakEvent event) { 
     	if(event.isCancelled()||event.getBlock().getType()!=Material.BARRIER)
     		return;
-
-        this.blockManager.breakBlock(event.getBlock().getLocation(), event.getPlayer());
+    	if(BlockEntities.resAPI.getPermsByLoc(event.getBlock().getLocation()).playerHas(event.getPlayer(),Flags.destroy, true))
+    		this.blockManager.breakBlock(event.getBlock().getLocation(), event.getPlayer());
     }
     @EventHandler
     public void onBlockLoad(EntitiesLoadEvent event) {
