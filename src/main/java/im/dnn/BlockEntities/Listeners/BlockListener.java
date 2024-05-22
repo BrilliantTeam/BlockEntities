@@ -81,7 +81,8 @@ public class BlockListener implements Listener {
     		
     		if(BlockEntities.resAPI.getPermsByLoc(event.getClickedBlock().getLocation()).playerHas(event.getPlayer(),Flags.destroy, true))
     			this.blockManager.breakBlock(event.getClickedBlock().getLocation(), event.getPlayer());
-        }
+    	  	event.setCancelled(true);
+    	}
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -90,6 +91,7 @@ public class BlockListener implements Listener {
     		return;
     	if(BlockEntities.resAPI.getPermsByLoc(event.getBlock().getLocation()).playerHas(event.getPlayer(),Flags.destroy, true))
     		this.blockManager.breakBlock(event.getBlock().getLocation(), event.getPlayer());
+    	event.setCancelled(true);
     }
     @EventHandler
     public void onBlockLoad(EntitiesLoadEvent event) {
